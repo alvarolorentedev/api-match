@@ -1,6 +1,6 @@
 import java.util.UUID
 
-import org.scalatest.{FlatSpec, FunSuite, Matchers}
+import org.scalatest.{FlatSpec, Matchers}
 
 
 class ParamenterParserTest extends FlatSpec with Matchers {
