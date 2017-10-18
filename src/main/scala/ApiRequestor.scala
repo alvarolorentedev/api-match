@@ -1,13 +1,22 @@
-trait ApiData{
-  def uri: String
-  def path: String
+import com.google.inject.Inject
+import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.WSAuthScheme
+
+import scala.concurrent.Future
+
+class ApiData(_uri: String, _path: String, _headers: Map[String,String]){
+  def uri: String = _uri
+  def path: String = _path
+  def headers: Map[String,String] = _headers
 }
 
-class ApiDataImpl(uriParam: String, pathParam: String) extends ApiData{
-  override def uri: String = uriParam
-  override def path: String = pathParam
-}
+class ApiRequestor @Inject()(client : WsClient) {
 
-class ApiRequestor(arguments: ApiData) {
+  def get(data : ApiData): Future[JsValue] = {
+    client.client
+      .url(data.uri + data.path)
+      .addHttpHeaders(data.headers.toSeq : _*)
+    Future.successful(Json.parse("{}"))
+  }
 
 }

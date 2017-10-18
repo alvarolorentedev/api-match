@@ -5,10 +5,10 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class ParamenterParserTest extends FlatSpec with Matchers {
   it should "parse parameters correctly" in {
-    val main = UUID.randomUUID().toString
-    val mainPath = UUID.randomUUID().toString
-    val matching = UUID.randomUUID().toString
-    val matchingPath = UUID.randomUUID().toString
+    val main = Faker.RandomString
+    val mainPath = Faker.RandomString
+    val matching = Faker.RandomString
+    val matchingPath = Faker.RandomString
     val parameters = Array[String]("--main", main, "--mainpath", mainPath, "--matching", matching, "--matchingpath", matchingPath)
     val result = new ParameterParser(parameters)
     result.main() should equal (main)
