@@ -11,5 +11,6 @@ class ApiMatchModule()(implicit actorSystem : ActorSystem, materializer : ActorM
     bind[ActorMaterializer].toInstance(materializer)
     bind[StandaloneWSClient].toInstance(StandaloneAhcWSClient())
     bind[WsClient]
+    bind[ApiRequestor]
   }
 }

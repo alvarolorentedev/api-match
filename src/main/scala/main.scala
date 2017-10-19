@@ -2,11 +2,8 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.google.inject.Guice
 import net.codingwell.scalaguice.InjectorExtensions._
-import play.api.libs.ws.DefaultBodyReadables._
-import play.api.libs.ws._
 
-import scala.concurrent.ExecutionContext.Implicits._
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Main {
   def main(args: Array[String]) {
@@ -14,14 +11,11 @@ object Main {
       implicit val materializer = ActorMaterializer()
       val injector = Guice.createInjector(new ApiMatchModule())
       val service = injector.instance[WsClient]
-      val call = service.client.url("http://www.google.com").get().map { response ⇒
-        val statusText: String = response.statusText
-        val body = response.body[String]
-        println(s"Got a response $statusText")
+      val requestor = injector.instance[ApiRequestor]
+      requestor.get(new ApiData("http://www.google.com","",Map())).map {
+        response =>println("call to google returned code: " + response.status)
+
       }
-      call
-        .andThen { case _ => service.client.close() }
-        .andThen { case _ => service.system.terminate() }
 
       val conf = new ParameterParser(args)
   }
